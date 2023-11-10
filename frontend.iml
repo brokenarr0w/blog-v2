@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/frontend">
+      <excludeFolder url="file://$MODULE_DIR$/frontend/dist" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="meting" level="application" />
+    <orderEntry type="library" name="aplayer" level="application" />
+  </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="35785b65-1e83-4f1c-bd52-d3389aa22d7d" />
+  </component>
+</module>
