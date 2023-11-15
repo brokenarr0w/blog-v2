@@ -12,6 +12,5 @@ import java.util.List;
  * @since 2023-10-18 21:07:19
  */
 public interface TagService extends IService<Tag> {
-    List<Tag> getListByIds(List<Integer> idList);
 }
 

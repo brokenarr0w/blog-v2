@@ -793,3 +793,7 @@ Q.idea/sonarlint/securityhotspotstore/8/f/8ffb1e9fa8d3cef778687a7d99afbd3e5e4ad5
 Q.idea/sonarlint/securityhotspotstore/b/9/b905aceaba0d8d424c62bd89e0d35833fd41aa72,8\8\88b0f03a292dba5542f3f765ae56dece206286ef
 9
 	readme.md,2\7\275d783e298228506068436512433d343feb52aa
+y
+Ibackend/src/main/java/com/example/backend/constants/DatabaseConstant.java,7\0\705791f9f4f3606a5c0e9f845cf5098aec3201a0
+u
+Ebackend/src/main/java/com/example/backend/constants/PageConstant.java,d\e\de230def09f337732859165d4dab165550ff367e

@@ -17,9 +17,5 @@ import java.util.List;
 @Service("tagService")
 public class TagServiceImpl extends ServiceImpl<TagDao, Tag> implements TagService {
 
-    @Override
-    public List<Tag> getListByIds(List<Integer> idList) {
-        return null;
-    }
 }
 

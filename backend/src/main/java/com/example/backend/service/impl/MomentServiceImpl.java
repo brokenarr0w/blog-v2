@@ -1,8 +1,10 @@
 package com.example.backend.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.backend.constants.DatabaseConstant;
 import com.example.backend.dao.MomentDao;
 import com.example.backend.entity.Moment;
 import com.example.backend.service.MomentService;
@@ -22,10 +24,11 @@ public class MomentServiceImpl extends ServiceImpl<MomentDao, Moment> implements
     @Override
     public R<Page<Moment>> getMomentListByPageNum(Long page, Long pageNum, String name) {
         Page<Moment> momentPage = new Page<>(page,pageNum);
-        LambdaQueryWrapper<Moment> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(StringUtils.isNotBlank(name),Moment::getContent,name);
-        lambdaQueryWrapper.orderByDesc(Moment::getCreateTime);
-        this.page(momentPage,lambdaQueryWrapper);
+        QueryWrapper<Moment> queryWrapper = new QueryWrapper<>();
+        queryWrapper
+                .like(StringUtils.isNotBlank(name),DatabaseConstant.MomentTable.COLUMN_CONTENT,name)
+                .orderByDesc(DatabaseConstant.CommonColumnEnum.CREATE_TIME.getName());
+        this.page(momentPage,queryWrapper);
         return R.success("查询成功",momentPage);
     }
 }

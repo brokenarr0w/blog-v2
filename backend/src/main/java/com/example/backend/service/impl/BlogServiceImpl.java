@@ -1,15 +1,15 @@
 package com.example.backend.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Console;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.backend.constants.DatabaseConstant;
+import com.example.backend.constants.PageConstant;
 import com.example.backend.dao.BlogDao;
-import com.example.backend.dao.TagDao;
 import com.example.backend.dto.BlogDto;
 import com.example.backend.entity.Blog;
 import com.example.backend.entity.BlogTag;
@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,24 +48,24 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         return categoryService.getById(categoryId).getCategoryName();
     }
     public List<Tag> getTagsByBlogId(Long blogId){
-            //todo 这里的魔法值没有解决
             QueryWrapper<BlogTag> blogTagQueryWrapper = new QueryWrapper<>();
-            blogTagQueryWrapper.eq("blog_id",blogId);
+            blogTagQueryWrapper.eq(DatabaseConstant.BlogTable.COLUMN_BLOG_ID,blogId);
         List<BlogTag> list = blogTagService.list(blogTagQueryWrapper);
         if (CollectionUtils.isEmpty(list)){
                 return CollUtil.newArrayList();
             }
         QueryWrapper<Tag> tagQueryWrapper = new QueryWrapper<>();
-        tagQueryWrapper.in("id",list);
+        tagQueryWrapper.in(DatabaseConstant.CommonColumnEnum.ID.getName(),list);
             return tagService.list(tagQueryWrapper);
     }
     @Override
     public R<Page<BlogDto>> getBlogListByPageNum(Long page, Long pageNum, String name) {
         Page<Blog> blogPage = new Page<>(page,pageNum);
         Page<BlogDto> dtoPage = new Page<>();
-        LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
-        wrapper.like(StringUtils.isNotBlank(name),Blog::getTitle,name);
-        wrapper.orderByDesc(Blog::getCreateTime).orderByDesc(Blog::getUpdateTime);
+        QueryWrapper<Blog> wrapper = new QueryWrapper<>();
+        wrapper.like(StringUtils.isNotBlank(name),DatabaseConstant.BlogTable.COLUMN_TITLE,name);
+        wrapper.orderByDesc(DatabaseConstant.CommonColumnEnum.CREATE_TIME.getName())
+                .orderByDesc(DatabaseConstant.CommonColumnEnum.UPDATE_TIME.getName());
         this.page(blogPage,wrapper);
         List<Blog> blogList = blogPage.getRecords();
         List<BlogDto> dtoList =blogList.stream().map((item) -> {
@@ -80,7 +79,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
             blogDto.setTagList(list);
             return blogDto;
         }).toList();
-        BeanUtils.copyProperties(blogPage,dtoPage,"records");
+        BeanUtils.copyProperties(blogPage,dtoPage, PageConstant.RECORD);
         dtoPage.setRecords(dtoList);
         return R.success("查询成功",dtoPage);
     }
@@ -133,25 +132,26 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
             blogDto.setTagList(tagList);
             return blogDto;
         }).toList();
-        BeanUtils.copyProperties(blogPage,dtoPage,"records");
+        BeanUtils.copyProperties(blogPage,dtoPage,PageConstant.RECORD);
         dtoPage.setRecords(dtoList);
         return R.success("查询成功",dtoPage);
     }
 
     @Override
     public R<Page<BlogDto>> getBlogByTagId(Long id, Long page, Long pageNum) {
-        List<BlogTag> datalist = blogTagService.query().eq("tag_id", id).list();
+        List<BlogTag> datalist = blogTagService.query().eq(DatabaseConstant.BlogTagTable.COLUMN_TAG_ID, id).list();
         List<String> blogIdList = datalist.stream().map(BlogTag::getBlogId).toList();
         if(blogIdList.isEmpty()){
             return R.failure(404,"该标签下没有文章");
         }
         Page<Blog> blogPage = new Page<>(page,pageNum);
-        LambdaQueryWrapper<Blog> blogLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        blogLambdaQueryWrapper.in(Blog::getId,blogIdList).
-                orderByDesc(Blog::getCreateTime).orderByDesc(Blog::getUpdateTime);
+        QueryWrapper<Blog> blogLambdaQueryWrapper = new QueryWrapper<>();
+        blogLambdaQueryWrapper.in(DatabaseConstant.BlogTable.COLUMN_BLOG_ID,blogIdList).
+                orderByDesc(DatabaseConstant.CommonColumnEnum.CREATE_TIME.getName())
+                .orderByDesc(DatabaseConstant.CommonColumnEnum.UPDATE_TIME.getName());
         this.page(blogPage,blogLambdaQueryWrapper);
         Page<BlogDto> blogDtoPage = new Page<>();
-        BeanUtils.copyProperties(blogPage,blogDtoPage,"records");
+        BeanUtils.copyProperties(blogPage,blogDtoPage,PageConstant.RECORD);
         List<Blog> records = blogPage.getRecords();
         List<BlogDto> dtoList = records.stream().map(item -> {
             BlogDto blogDto = new BlogDto();
