@@ -1,8 +1,11 @@
 package com.example.backend.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Console;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.backend.dao.BlogDao;
@@ -10,11 +13,11 @@ import com.example.backend.dao.TagDao;
 import com.example.backend.dto.BlogDto;
 import com.example.backend.entity.Blog;
 import com.example.backend.entity.BlogTag;
-import com.example.backend.entity.Category;
 import com.example.backend.entity.Tag;
 import com.example.backend.service.BlogService;
 import com.example.backend.service.BlogTagService;
 import com.example.backend.service.CategoryService;
+import com.example.backend.service.TagService;
 import com.example.backend.utils.R;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
@@ -22,11 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * (Blog)表服务实现类
@@ -42,15 +44,24 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     @Resource
     BlogTagService blogTagService;
     @Resource
-    TagDao tagDao;
+    TagService tagService;
+    public String getCategoryNameByCategoryId(Long categoryId){
+        return categoryService.getById(categoryId).getCategoryName();
+    }
+    public List<Tag> getTagsByBlogId(Long blogId){
+            //todo 这里的魔法值没有解决
+            QueryWrapper<BlogTag> blogTagQueryWrapper = new QueryWrapper<>();
+            blogTagQueryWrapper.eq("blog_id",blogId);
+        List<BlogTag> list = blogTagService.list(blogTagQueryWrapper);
+        if (CollectionUtils.isEmpty(list)){
+                return CollUtil.newArrayList();
+            }
+        QueryWrapper<Tag> tagQueryWrapper = new QueryWrapper<>();
+        tagQueryWrapper.in("id",list);
+            return tagService.list(tagQueryWrapper);
+    }
     @Override
     public R<Page<BlogDto>> getBlogListByPageNum(Long page, Long pageNum, String name) {
-        Map<String,String> category = new HashMap<>();
-        List<Category> categories = categoryService.list();
-        categories.forEach((item) -> {
-            category.put(item.getId(), item.getCategoryName());
-        });
-        log.info(category.toString());
         Page<Blog> blogPage = new Page<>(page,pageNum);
         Page<BlogDto> dtoPage = new Page<>();
         LambdaQueryWrapper<Blog> wrapper = new LambdaQueryWrapper<>();
@@ -61,21 +72,12 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         List<BlogDto> dtoList =blogList.stream().map((item) -> {
             BlogDto blogDto = new BlogDto();
             BeanUtils.copyProperties(item,blogDto);
-            String categoryName = category.get(item.getCategoryId());
-            log.info(categoryName);
-            blogDto.setCategoryName(categoryName);
-            List<String> idList = new ArrayList<>();
-            LambdaQueryWrapper<BlogTag> blogTagLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            blogTagLambdaQueryWrapper.eq(BlogTag::getBlogId,item.getId());
-            List<BlogTag> list = blogTagService.list(blogTagLambdaQueryWrapper);
-            if(list.isEmpty()){
-               return blogDto;
+            if(!item.getCategoryId().isEmpty()) {
+                String categoryName = getCategoryNameByCategoryId(Long.valueOf(item.getCategoryId()));
+                blogDto.setCategoryName(categoryName);
             }
-            list.forEach((data) -> idList.add(data.getTagId()));
-            LambdaQueryWrapper<Tag> tagLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            tagLambdaQueryWrapper.in(Tag::getId,idList);
-            List<Tag> tagList = tagDao.selectList(tagLambdaQueryWrapper);
-            blogDto.setTagList(tagList);
+            List<Tag> list = getTagsByBlogId(Long.valueOf(item.getId()));
+            blogDto.setTagList(list);
             return blogDto;
         }).toList();
         BeanUtils.copyProperties(blogPage,dtoPage,"records");
@@ -88,58 +90,33 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         Blog blog = getById(id);
         BlogDto data = new BlogDto();
         BeanUtils.copyProperties(blog,data);
-        List<Long> idList = new ArrayList<>();
-        LambdaQueryWrapper<BlogTag> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(BlogTag::getBlogId,blog.getId());
-        List<BlogTag> list = blogTagService.list(wrapper);
-        if(!list.isEmpty()) {
-            list.forEach((item) -> idList.add(Long.valueOf(item.getTagId())));
-            LambdaQueryWrapper<Tag> tagLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            tagLambdaQueryWrapper.in(Tag::getId, idList);
-            List<Tag> tagList = tagDao.selectList(tagLambdaQueryWrapper);
-            data.setTagList(tagList);
-        }
+        List<Tag> tagList = getTagsByBlogId(Long.valueOf(blog.getId()));
+        data.setTagList(tagList);
         return R.success("查询成功",data);
     }
 
     @Override
     @Transactional
     public R saveOrUpdateBlog(String blog) {
-        Map<String,String> category = new HashMap<>();
-        List<Category> categories = categoryService.list();
-        categories.forEach((item) -> {
-            category.put(item.getId(), item.getCategoryName());
-        });
-        log.info(blog);
         JSONObject object = JSONUtil.parseObj(blog);
-
         String string = object.get("data").toString();
         BlogDto data = JSONUtil.toBean(string, BlogDto.class);
         saveOrUpdate(data);
         List<Tag> tagList = data.getTagList();
-        List<BlogTag> list = new ArrayList<>();
         LambdaQueryWrapper<BlogTag> blogTagLambdaQueryWrapper = new LambdaQueryWrapper<>();
         blogTagLambdaQueryWrapper.eq(BlogTag::getBlogId,data.getId());
         blogTagService.remove(blogTagLambdaQueryWrapper);
-
-        tagList.forEach((item) -> {
-            BlogTag blogTag = new BlogTag();
-            blogTag.setBlogId(data.getId());
-            blogTag.setTagId(item.getId());
-            list.add(blogTag);
-        });
+        List<BlogTag> list = tagList.stream().map(item -> BlogTag
+                .builder()
+                .blogId(data.getId())
+                .tagId(item.getId()).build()
+            ).toList();
         blogTagService.saveBatch(list);
-        return null;
+        return R.success("操作成功");
     }
 
     @Override
     public R<Page<BlogDto>> getBlogByCategoryId(Long id,Long page,Long pageNum) {
-        Map<Long,String> category = new HashMap<>();
-        List<Category> categories = categoryService.list();
-        categories.forEach((item) -> {
-            category.put(Long.valueOf(item.getId()), item.getCategoryName());
-        });
-        log.info(category.toString());
         Page<Blog> blogPage = new Page<>(page,pageNum);
         Page<BlogDto> dtoPage = new Page<>();
         LambdaQueryWrapper<Blog> blogDtoLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -150,19 +127,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         List<BlogDto> dtoList =blogList.stream().map((item) -> {
             BlogDto blogDto = new BlogDto();
             BeanUtils.copyProperties(item,blogDto);
-            String categoryName = category.get(Long.valueOf(item.getCategoryId()));
+            String categoryName = getCategoryNameByCategoryId(Long.valueOf(item.getCategoryId()));
             blogDto.setCategoryName(categoryName);
-            List<String> idList = new ArrayList<>();
-            LambdaQueryWrapper<BlogTag> blogTagLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            blogTagLambdaQueryWrapper.eq(BlogTag::getBlogId,item.getId());
-            List<BlogTag> list = blogTagService.list(blogTagLambdaQueryWrapper);
-            if(list.isEmpty()){
-                return blogDto;
-            }
-            list.forEach((data) -> idList.add(data.getTagId()));
-            LambdaQueryWrapper<Tag> tagLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            tagLambdaQueryWrapper.in(Tag::getId,idList);
-            List<Tag> tagList = tagDao.selectList(tagLambdaQueryWrapper);
+            List<Tag> tagList = getTagsByBlogId(Long.valueOf(item.getId()));
             blogDto.setTagList(tagList);
             return blogDto;
         }).toList();
@@ -173,17 +140,11 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
 
     @Override
     public R<Page<BlogDto>> getBlogByTagId(Long id, Long page, Long pageNum) {
-
         List<BlogTag> datalist = blogTagService.query().eq("tag_id", id).list();
         List<String> blogIdList = datalist.stream().map(BlogTag::getBlogId).toList();
         if(blogIdList.isEmpty()){
             return R.failure(404,"该标签下没有文章");
         }
-        Map<Long,String> category = new HashMap<>();
-        List<Category> categories = categoryService.list();
-        categories.forEach((item) -> {
-            category.put(Long.valueOf(item.getId()), item.getCategoryName());
-        });
         Page<Blog> blogPage = new Page<>(page,pageNum);
         LambdaQueryWrapper<Blog> blogLambdaQueryWrapper = new LambdaQueryWrapper<>();
         blogLambdaQueryWrapper.in(Blog::getId,blogIdList).
@@ -195,19 +156,9 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         List<BlogDto> dtoList = records.stream().map(item -> {
             BlogDto blogDto = new BlogDto();
             BeanUtils.copyProperties(item,blogDto);
-            String categoryName = category.get(Long.valueOf(item.getCategoryId()));
+            String categoryName = getCategoryNameByCategoryId(Long.valueOf(item.getCategoryId()));
             blogDto.setCategoryName(categoryName);
-            List<String> idList = new ArrayList<>();
-            LambdaQueryWrapper<BlogTag> blogTagLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            blogTagLambdaQueryWrapper.eq(BlogTag::getBlogId,item.getId());
-            List<BlogTag> list = blogTagService.list(blogTagLambdaQueryWrapper);
-            if(list.isEmpty()){
-                return blogDto;
-            }
-            list.forEach((data) -> idList.add(data.getTagId()));
-            LambdaQueryWrapper<Tag> tagLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            tagLambdaQueryWrapper.in(Tag::getId,idList);
-            List<Tag> tagList = tagDao.selectList(tagLambdaQueryWrapper);
+            List<Tag> tagList = getTagsByBlogId(Long.valueOf(item.getId()));
             blogDto.setTagList(tagList);
             return blogDto;
         }).toList();

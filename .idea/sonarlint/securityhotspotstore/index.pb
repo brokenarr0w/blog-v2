@@ -95,8 +95,6 @@ G
 frontend/vite.config.js,8\9\89e887e9a92fbbc4697c29f1c3f2a014c02bb2c4
 Å
 Q.idea/sonarlint/securityhotspotstore/8/7/877318f82c6570214f896239d384b5c807c52bf0,4\7\470ea654e0f27b868bf984d937da2afbb578c360
-B
-frontend/README.md,6\a\6a3a36e34dda2b89c027f00ac950371695b13c75
 Å
 Q.idea/sonarlint/securityhotspotstore/8/f/8fd619140c9b6b4f1d2fb6cff98b51aaa10b492d,7\3\731e83ee6b1212915076b9f6ce812dd436c5d93c
 H
@@ -416,8 +414,6 @@ Q.idea/sonarlint/securityhotspotstore/5/d/5d0fa1264d6a3907e8cd834e01908ffa359a09
 Å
 Q.idea/sonarlint/securityhotspotstore/5/f/5f71c3c326db0755d2d056f0c82fd5d957596b23,2\1\2173ca15aca73ad6348b514df359e51baa9dee98
 Å
-Q.idea/sonarlint/securityhotspotstore/6/a/6a3a36e34dda2b89c027f00ac950371695b13c75,6\0\606cb63a79a5344b35c2aa3252663904d32bc1fc
-Å
 Q.idea/sonarlint/securityhotspotstore/6/c/6c14031b10917f029ec18bd13ec7320de30cc060,6\a\6ab8fb88a4afedcdd9ef7572424ce047ff76e774
 Å
 Q.idea/sonarlint/securityhotspotstore/6/c/6c768c527ae9928246c8d0a8a7822b62da02b7cb,c\6\c6ee6d17df6d9d256378844b4f6d5ebd9e0994b6
@@ -683,8 +679,6 @@ w
 G.idea/sonarlint/issuestore/5/8/583dd82c4651288e5958282569a2971944c6d641,9\9\99043e35a1fb32454d940fe1984a420ace9a1c4a
 w
 G.idea/sonarlint/issuestore/5/d/5d0fa1264d6a3907e8cd834e01908ffa359a0973,9\6\9646fdd78ffc919980486c3442689ee0dc4ad123
-w
-G.idea/sonarlint/issuestore/6/a/6a3a36e34dda2b89c027f00ac950371695b13c75,5\3\5319de784935a8ab99b0d0c77dbb4629b93525bc
 w
 G.idea/sonarlint/issuestore/6/c/6c768c527ae9928246c8d0a8a7822b62da02b7cb,8\e\8e1836bb95a9f04565b97a1a53b8ff014aa118ac
 w

@@ -1,35 +1,17 @@
 
-^
-java:S1192Q"HDefine a constant instead of duplicating this literal "records" 3 times.(»Î¢à
-H
-java:S16112"2Remove the parentheses around the "item" parameter(ìÑ“à
-B
-java:S16022",Remove useless curly braces around statement(ìÑ“à
-H
-java:S1611="2Remove the parentheses around the "item" parameter(ú«´Á
-G
-java:S1611J"2Remove the parentheses around the "data" parameter(õşÑ]
+e
+java:S1192S"HDefine a constant instead of duplicating this literal "records" 3 times.(»Î¢à8ã“İ‡½1
+O
+java:S11354"2Complete the task associated to this TODO comment.(Ğ ‘ş8ü“İ‡½1
+O
+java:S1611H"2Remove the parentheses around the "item" parameter(ú«´Á8ÿ“İ‡½1
+r
+java:S6809h"UCall transactional methods via an injected dependency instead of directly via 'this'.(ù˜Òó8‚”İ‡½1
+O
+java:S1611"2Remove the parentheses around the "item" parameter(ú«´Á8…”İ‡½1
+Z
+java:S1128"8Remove this unused import 'cn.hutool.core.lang.Console'.(èÂ¸†üÿÿÿÿ8‹”İ‡½1
+]
+java:S1128";Remove this unused import 'com.example.backend.dao.TagDao'.(Ìéş™ùÿÿÿÿ8”İ‡½1
 M
-java:S1611`"2Remove the parentheses around the "item" parameter(àåıÒúÿÿÿÿ
-H
-java:S1611n"2Remove the parentheses around the "item" parameter(ìÑ“à
-B
-java:S1602n",Remove useless curly braces around statement(ìÑ“à
-k
-java:S6809v"UCall transactional methods via an injected dependency instead of directly via 'this'.(ù˜Òó
-M
-java:S1611}"2Remove the parentheses around the "item" parameter(µÇ€õÿÿÿÿÿ
-I
-java:S1611‹"2Remove the parentheses around the "item" parameter(ìÑ“à
-C
-java:S1602‹",Remove useless curly braces around statement(ìÑ“à
-I
-java:S1611–"2Remove the parentheses around the "item" parameter(ú«´Á
-H
-java:S1611¢"2Remove the parentheses around the "data" parameter(õşÑ]
-I
-java:S1611¸"2Remove the parentheses around the "item" parameter(ìÑ“à
-C
-java:S1602¸",Remove useless curly braces around statement(ìÑ“à
-H
-java:S1611Ï"2Remove the parentheses around the "data" parameter(õşÑ]
+java:S1128"0Remove this unused import 'java.util.ArrayList'.(÷‰îƒ8”İ‡½1
