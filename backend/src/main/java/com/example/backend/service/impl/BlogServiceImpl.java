@@ -1,6 +1,7 @@
 package com.example.backend.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Console;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -49,13 +50,13 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
     }
     public List<Tag> getTagsByBlogId(Long blogId){
             QueryWrapper<BlogTag> blogTagQueryWrapper = new QueryWrapper<>();
-            blogTagQueryWrapper.eq(DatabaseConstant.BlogTable.COLUMN_BLOG_ID,blogId);
-        List<BlogTag> list = blogTagService.list(blogTagQueryWrapper);
-        if (CollectionUtils.isEmpty(list)){
+            blogTagQueryWrapper.eq(DatabaseConstant.BlogTagTable.COLUMN_BLOG_ID,blogId);
+        List<String> idslist = blogTagService.list(blogTagQueryWrapper).stream().map(BlogTag::getTagId).toList();
+        if (idslist.isEmpty()){
                 return CollUtil.newArrayList();
             }
         QueryWrapper<Tag> tagQueryWrapper = new QueryWrapper<>();
-        tagQueryWrapper.in(DatabaseConstant.CommonColumnEnum.ID.getName(),list);
+        tagQueryWrapper.in(DatabaseConstant.CommonColumnEnum.ID.getName(),idslist);
             return tagService.list(tagQueryWrapper);
     }
     @Override
@@ -100,7 +101,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         JSONObject object = JSONUtil.parseObj(blog);
         String string = object.get("data").toString();
         BlogDto data = JSONUtil.toBean(string, BlogDto.class);
-        saveOrUpdate(data);
+        Console.log(data);
         List<Tag> tagList = data.getTagList();
         LambdaQueryWrapper<BlogTag> blogTagLambdaQueryWrapper = new LambdaQueryWrapper<>();
         blogTagLambdaQueryWrapper.eq(BlogTag::getBlogId,data.getId());

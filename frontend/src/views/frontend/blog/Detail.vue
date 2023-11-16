@@ -14,7 +14,7 @@ onMounted(async () => {
   const res = await getBlogById(route.params.id)
 
   blog.value=res.data
-
+  console.log(res.data)
 })
 </script>
 
@@ -38,8 +38,12 @@ onMounted(async () => {
       <div>
         <span>{{blog.description}}</span>
         <md-preview :model-value="blog.content" :editor-id="id"></md-preview>
-
       </div>
+      <div class="tag">
+        <el-divider></el-divider>
+        <el-tag v-for="item in blog.tagList">{{item.tagName}}</el-tag>
+      </div>
+
     </el-card>
 
   </div>
