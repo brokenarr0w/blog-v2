@@ -15,9 +15,9 @@ onMounted(() => {
 </script>
 
 <template>
-<div>
+<div style="position: sticky;top: 70px;">
   <el-card style="margin: 10px 0;">
-  <MdCatalog v-if="id" style="position: sticky" :editorId="id" :scrollElement="scrollElement" />
+  <MdCatalog v-if="id"  :editorId="id" :scrollElement="scrollElement" />
   </el-card>
 </div>
 </template>

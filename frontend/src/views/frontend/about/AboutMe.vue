@@ -3,6 +3,7 @@ import {onMounted, ref} from "vue";
 import {getAbout} from "../../../api/backend/about.js";
 import {MdPreview} from "md-editor-v3";
 import 'md-editor-v3/lib/preview.css';
+import Comment from "../../../components/frontend/comment/Comment.vue";
 
 let data = ref({})
 onMounted(async () => {
@@ -31,10 +32,16 @@ onMounted(async () => {
       <div>
       <MdPreview v-if="data.content" v-model="data.content"></MdPreview>
       </div>
+
     </el-card>
+    <div class="comment">
+    <Comment :type="2"></Comment>
+  </div>
   </div>
 </template>
 
 <style scoped>
-
+.comment{
+  margin: 50px 0;
+}
 </style>

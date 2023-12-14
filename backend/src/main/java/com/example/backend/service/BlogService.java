@@ -19,5 +19,9 @@ public interface BlogService extends IService<Blog> {
     R saveOrUpdateBlog(String blog);
     R<Page<BlogDto>> getBlogByCategoryId(Long id,Long page,Long pageNum);
     R<Page<BlogDto>> getBlogByTagId(Long id,Long page,Long pageNum);
+
+    R<Blog> getPrevById(String id);
+
+    R<Blog> getNextById(String id);
 }
 

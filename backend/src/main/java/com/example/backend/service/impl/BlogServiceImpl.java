@@ -26,8 +26,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -165,6 +165,40 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         }).toList();
         blogDtoPage.setRecords(dtoList);
         return R.success("查询成功",blogDtoPage);
+    }
+
+    /**
+     * 获取对应文章的上一篇文章
+     * @param id 对应文章的id
+     * @return 上一篇文章的id
+     */
+    @Override
+    public R<Blog> getPrevById(String id) {
+        Blog blog = lambdaQuery().eq(Blog::getId, id).one();
+        LocalDateTime createTime = blog.getCreateTime();
+        List<Blog> list = lambdaQuery().lt(Blog::getCreateTime, createTime).orderByDesc(Blog::getCreateTime).list();
+        if (list == null || list.isEmpty()) {
+            return R.success("没有上一篇文章");
+        }
+        return R.success("获取成功",list.get(0));
+
+    }
+
+    /**
+     * 获取对应文章的下一篇文章
+     *
+     * @param id 对应文章的id
+     * @return 对应文章的下一篇的id
+     */
+    @Override
+    public R<Blog> getNextById(String id) {
+        Blog blog = lambdaQuery().eq(Blog::getId, id).one();
+        LocalDateTime createTime = blog.getCreateTime();
+        List<Blog> list = lambdaQuery().gt(Blog::getCreateTime, createTime).orderByDesc(Blog::getCreateTime).list();
+        if(list == null || list.isEmpty()){
+            return R.success("没有下一篇文章");
+        }
+        return R.success("获取成功",list.get(0));
     }
 
 }

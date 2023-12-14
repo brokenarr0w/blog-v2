@@ -1,5 +1,6 @@
 package com.example.backend.common;
 
+import cn.hutool.core.lang.Console;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
@@ -19,7 +20,9 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         metaObject.setValue("createTime", LocalDateTime.now());
-        metaObject.setValue("updateTime", LocalDateTime.now());
+        if(metaObject.hasGetter("updateTime")) {
+            metaObject.setValue("updateTime", LocalDateTime.now());
+        }
     }
 
     @Override

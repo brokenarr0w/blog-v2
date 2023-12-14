@@ -20,14 +20,15 @@ onMounted(async () => {
  </div>
    </a>
    <div class="copy">
-
       <div>
-        <el-text size="large" type="info">{{ store.copyright }} <router-link style="color: rgb(255, 229, 0);text-decoration: none" to="/">
+        <el-text size="large" type="info">Copyright &copy;{{ store.copyright }} <router-link style="color: rgb(255, 229, 0);text-decoration: none" to="/">
           {{ store.suffix }}
         </router-link>
         </el-text>
         <el-text size="large" style="margin: 0 15px">|</el-text>
-        <el-text size="large" type="info">{{store.record}}</el-text>
+        <a href="https://beian.miit.gov.cn/" style="color: rgb(255, 229, 0);">
+          <el-text size="large">{{store.record}}</el-text>
+        </a>
       </div>
    </div>
    <div class="badge">

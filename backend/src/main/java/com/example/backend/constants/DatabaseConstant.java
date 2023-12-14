@@ -21,6 +21,10 @@ public class DatabaseConstant {
     public static class MomentTable{
         public static final String COLUMN_CONTENT = "content";
     }
+    public static class CommentTable{
+        public static final String COLUMN_TYPE = "comment_type";
+        public static final String COLUMN_BLOGID = "blog_id";
+    }
     @Getter
     public enum CommonColumnEnum{
         CREATE_TIME("create_time"),

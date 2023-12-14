@@ -88,5 +88,13 @@ public class BlogController {
                 .orderByDesc("create_time").eq("is_top",1).last("limit 5")
                 .list());
     }
+    @GetMapping("/prev")
+    public R<Blog> getPrevById(@RequestParam("id") String id){
+        return blogService.getPrevById(id);
+    }
+    @GetMapping("/next")
+    public R<Blog> getNextById(@RequestParam("id") String id){
+        return blogService.getNextById(id);
+    }
 }
 

@@ -45,5 +45,6 @@ onMounted(() => {
   line-height: 3rem;
   font-size: 3rem;
   opacity: 1;
+  color: #007ec6;
 }
 </style>

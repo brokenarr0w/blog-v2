@@ -13,8 +13,6 @@ dayjs.locale('zh')
 let data = ref()
 onMounted(async () => {
  const res = await getView()
-  console.log(res.data);
-  console.log(s)
   data.value=res.data
 })
 </script>

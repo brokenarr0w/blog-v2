@@ -65,3 +65,12 @@ export function getBlogList(){
 export function getBlogByIsTop(){
     return request.get('blog/top')
 }
+export function getPrevById(id){
+    return request.get('blog/prev',{
+        params:{id}
+    })
+}export function getNextById(id){
+    return request.get('blog/next',{
+        params:{id}
+    })
+}

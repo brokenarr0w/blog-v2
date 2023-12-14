@@ -13,6 +13,7 @@
     "@icon-park/vue-next": "^1.4.2",
     "animate.css": "^4.1.1",
     "axios": "^1.5.1",
+    "browser-tool": "^1.2.0",
     "dayjs": "^1.11.10",
     "element-plus": "^2.4.1",
     "image-compressor": "^2.0.3",
