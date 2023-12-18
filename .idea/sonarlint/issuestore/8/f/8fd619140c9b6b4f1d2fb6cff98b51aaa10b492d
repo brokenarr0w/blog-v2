@@ -1,5 +1,9 @@
 
 O
-java:S1611H"2Remove the parentheses around the "item" parameter(ú«´Á8´Æà±Æ1
+java:S1611H"2Remove the parentheses around the "item" parameter(ú«´Á8˜‡ÑäÇ1
+r
+java:S6809h"UCall transactional methods via an injected dependency instead of directly via 'this'.(ù˜Òó8 ‡ÑäÇ1
 O
-java:S1611"2Remove the parentheses around the "item" parameter(ú«´Á8»Æà±Æ1
+java:S1611"2Remove the parentheses around the "item" parameter(ú«´Á8¦‡ÑäÇ1
+P
+java:S1611Ï"2Remove the parentheses around the "item" parameter(÷÷í«8³‡ÑäÇ1
