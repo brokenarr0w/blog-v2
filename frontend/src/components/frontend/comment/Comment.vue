@@ -19,6 +19,8 @@ let form = ref({
   email:'',
   appName: '',
   platform: '',
+  Ip:'',
+  avatar:'',
 })
 let props = defineProps(["type","blogId"]);
 let isClick = false
@@ -83,7 +85,8 @@ const getCommentList =async (page,pageSize) => {
 }
 onMounted(async () => {
   await getCommentList(1, 5)
-
+  form.value.Ip = sessionStorage.getItem("ip")
+  console.log(form)
 })
 </script>
 

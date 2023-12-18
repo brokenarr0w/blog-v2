@@ -50,6 +50,14 @@ public class Comment implements Serializable {
      * （可选）来自于哪个文章
      */
     private Long blogId;
+    /**
+     * 评论人的头像(有默认头像)
+     */
+    private String avatar;
+    /**
+     * 评论人的IP
+     */
+    private String Ip;
 /**
      * 评论创建时间
      */

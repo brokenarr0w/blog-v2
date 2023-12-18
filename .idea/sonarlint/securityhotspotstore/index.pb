@@ -104,3 +104,7 @@ C
 frontend/.gitignore,e\2\e23a63a9f05477a70f6e75d709dbb4eae2db742d
 B
 backend/.gitignore,7\e\7e16691a9fc60084a157565ec422c8094d3df67c
+C
+frontend/index.html,a\1\a12b0e66474192f8cb9a2db83f26413a588dec1d
+Y
+)frontend/src/views/frontend/home/Home.vue,8\7\877318f82c6570214f896239d384b5c807c52bf0

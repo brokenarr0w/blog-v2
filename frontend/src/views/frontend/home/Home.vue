@@ -3,6 +3,7 @@
 import BlogList from "../../frontend/blog/BlogList.vue";
 import {getBlogCount, getBlogListByPageNum} from "../../../api/backend/blog.js";
 import {ref} from "vue";
+import {getUserIP} from "../../../api/backend/user.js";
 
 let blogList = ref([])
 let count = ref(0)
@@ -11,6 +12,8 @@ const getBlogList =async (page,name) => {
   const countRes = await getBlogCount()
   blogList.value = res.data.records
   count.value = countRes.data
+
+
 }
 </script>
 

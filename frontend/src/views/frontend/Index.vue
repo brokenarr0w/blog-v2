@@ -9,13 +9,18 @@ import Footer from "../../components/frontend/index/Footer.vue";
 import {useRoute, useRouter} from "vue-router";
 import {onMounted} from "vue";
 import Toc from "../../components/frontend/blog/Toc.vue";
+import {getUserIP} from "../../api/backend/user.js";
 
 const router = useRouter()
 const id = 'preview-only'
 const route = useRoute()
 const clientStore = useClientStore()
-onMounted(() => {
-
+onMounted(async () => {
+  if (!sessionStorage.getItem("ip")){
+    const res = await getUserIP()
+    console.log(res.data.ip)
+    sessionStorage.setItem("ip",res.data.ip)
+  }
 })
 </script>
 
