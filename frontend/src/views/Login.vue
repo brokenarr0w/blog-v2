@@ -1,21 +1,22 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import {login} from "../api/backend/user.js";
+import {checkLogin, login} from "../api/backend/user.js";
 import {ElMessage} from "element-plus";
 import {useRouter} from "vue-router";
 
 let user = ref()
 let password = ref()
 const router = useRouter()
-onMounted(() => {
-  if(localStorage.getItem('sa-token')){
+onMounted(async () => {
+const res =  await checkLogin()
+  if(res.data){
     ElMessage({
-      message: '您已经登录了，即将跳转至后台管理页面',
-      type: 'info'
+      message:"您已经登录，您将跳转到后台管理页面",
+      type: "info"
     })
     setInterval(() => {
-      router.push('/backend')
-    },1500)
+      router.push("/backend/home")
+    },2000)
   }
 })
 const handleLogin =async () => {

@@ -39,7 +39,8 @@ public class Blog extends Model<Blog> {
     @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime createTime;
-    private boolean isTop;
+    @TableField(value = "is_top")
+    private boolean top;
 
     //文章更新时间
     @TableField(fill = FieldFill.INSERT_UPDATE)

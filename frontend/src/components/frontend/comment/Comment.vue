@@ -77,7 +77,6 @@ const getCommentList =async (page,pageSize) => {
 
   } else {
     let data = await getAboutCommentsByPageNum(page, pageSize);
-    console.log(data.data)
     count.value = data.data.total
     comments.value = data.data.records
   }

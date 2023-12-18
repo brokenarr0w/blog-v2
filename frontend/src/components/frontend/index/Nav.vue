@@ -44,8 +44,11 @@ onMounted(async () => {
       关于我
     </el-menu-item>
     </el-space>
-
+    <div class="flex-grow">
+      <el-menu-item index="/login">登录</el-menu-item>
+    </div>
   </el-menu>
+
 </div>
 </template>
 
@@ -57,6 +60,9 @@ onMounted(async () => {
   width: 100%;
   position: fixed;
   z-index: 1000;
+}
+.flex-grow{
+  flex-grow: 1;
 }
 
 </style>

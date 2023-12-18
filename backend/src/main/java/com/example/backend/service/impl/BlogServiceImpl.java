@@ -1,7 +1,6 @@
 package com.example.backend.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Console;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -11,7 +10,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.backend.constants.DatabaseConstant;
 import com.example.backend.constants.PageConstant;
 import com.example.backend.dao.BlogDao;
-import com.example.backend.dto.BlogDto;
+import com.example.backend.dto.blog.BlogDto;
+import com.example.backend.dto.blog.BlogTitleDto;
 import com.example.backend.entity.Blog;
 import com.example.backend.entity.BlogTag;
 import com.example.backend.entity.Tag;
@@ -101,7 +101,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
         JSONObject object = JSONUtil.parseObj(blog);
         String string = object.get("data").toString();
         BlogDto data = JSONUtil.toBean(string, BlogDto.class);
-        Console.log(data);
+        saveOrUpdate(data);
         List<Tag> tagList = data.getTagList();
         LambdaQueryWrapper<BlogTag> blogTagLambdaQueryWrapper = new LambdaQueryWrapper<>();
         blogTagLambdaQueryWrapper.eq(BlogTag::getBlogId,data.getId());
@@ -199,6 +199,16 @@ public class BlogServiceImpl extends ServiceImpl<BlogDao, Blog> implements BlogS
             return R.success("没有下一篇文章");
         }
         return R.success("获取成功",list.get(0));
+    }
+
+    @Override
+    public R<List<BlogTitleDto>> getBlogTitleList() {
+        List<Blog> blogList = this.list();
+        List<BlogTitleDto> blogTitleDtoList = blogList.stream().map((item) -> BlogTitleDto.builder()
+                .id(item.getId())
+                .title(item.getTitle()).build()).toList();
+        return R.success("查询成功",blogTitleDtoList);
+
     }
 
 }

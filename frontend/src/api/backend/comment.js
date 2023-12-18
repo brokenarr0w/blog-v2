@@ -15,3 +15,11 @@ export function submitComment(content,name,email,commentType,appName,platform,bl
          content,name,email,commentType,appName,platform,blogId
     })
 }
+export function getCommentList(page,pageSize){
+    return request.get("comment/list",{
+        params:{
+            page,
+            pageSize
+        }
+    })
+}

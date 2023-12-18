@@ -1,4 +1,4 @@
-package com.example.backend.dto;
+package com.example.backend.dto.blog;
 
 import com.example.backend.entity.Blog;
 import com.example.backend.entity.Tag;

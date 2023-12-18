@@ -36,4 +36,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentDao,Comment> implemen
         save(reqDto);
         return R.success("发布评论成功");
     }
+
+    @Override
+    public R<Page<Comment>> getCommentList(Long page, Long pageNum) {
+        Page<Comment> commentPage = this.page(new Page<>(page, pageNum));
+        return R.success("查询成功",commentPage);
+    }
 }

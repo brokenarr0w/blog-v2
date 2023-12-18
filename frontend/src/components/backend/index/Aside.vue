@@ -27,6 +27,9 @@
     <el-menu-item index="/backend/moment">
     动态管理
     </el-menu-item>
+    <el-menu-item index="/backend/comment">
+      评论管理
+    </el-menu-item>
     <el-menu-item index="/backend/setting">
       网站设置
     </el-menu-item>

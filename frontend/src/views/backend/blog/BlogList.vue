@@ -67,11 +67,11 @@ const handlePagination =async (num) => {
     <div class="table">
       <el-table style="width: 95%" :data="blogList">
         <el-table-column align="center" label="序号" type="index" :width="100"></el-table-column>
-        <el-table-column align="center" label="标题" prop="title" :width="280"></el-table-column>
+        <el-table-column align="center" label="标题" prop="title" :width="240"></el-table-column>
         <el-table-column align="center" label="分类" prop="categoryName" :width="100"></el-table-column>
         <el-table-column align="center" label="置顶" :width="100">
           <template #default="scope">
-            {{scope.row.isTop ? '是' : '否'}}
+            {{scope.row.top ? '是' : '否'}}
           </template>
         </el-table-column>
         <el-table-column align="center" label="创建时间" prop="createTime" :width="200"></el-table-column>

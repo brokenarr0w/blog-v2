@@ -8,3 +8,6 @@ export function login(username,password){
         }
     })
 }
+export function checkLogin(){
+    return request.get("/login");
+}

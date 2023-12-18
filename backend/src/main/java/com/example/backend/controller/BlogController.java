@@ -4,7 +4,8 @@ package com.example.backend.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.backend.dto.BlogDto;
+import com.example.backend.dto.blog.BlogDto;
+import com.example.backend.dto.blog.BlogTitleDto;
 import com.example.backend.entity.Blog;
 import com.example.backend.entity.BlogTag;
 import com.example.backend.service.BlogService;
@@ -95,6 +96,10 @@ public class BlogController {
     @GetMapping("/next")
     public R<Blog> getNextById(@RequestParam("id") String id){
         return blogService.getNextById(id);
+    }
+    @GetMapping("/title")
+    public R<List<BlogTitleDto>> getBlogTitleList(){
+        return blogService.getBlogTitleList();
     }
 }
 

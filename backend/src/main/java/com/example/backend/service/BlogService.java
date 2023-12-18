@@ -2,9 +2,12 @@ package com.example.backend.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.backend.dto.BlogDto;
+import com.example.backend.dto.blog.BlogDto;
+import com.example.backend.dto.blog.BlogTitleDto;
 import com.example.backend.entity.Blog;
 import com.example.backend.utils.R;
+
+import java.util.List;
 
 
 /**
@@ -23,5 +26,7 @@ public interface BlogService extends IService<Blog> {
     R<Blog> getPrevById(String id);
 
     R<Blog> getNextById(String id);
+
+    R<List<BlogTitleDto>> getBlogTitleList();
 }
 

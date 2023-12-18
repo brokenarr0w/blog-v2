@@ -10,10 +10,7 @@ import com.example.backend.service.UserService;
 import com.example.backend.utils.R;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * (User)表控制层
@@ -47,6 +44,10 @@ public class UserController {
         StpUtil.login(username);
         return R.success("登录成功",StpUtil.getTokenValue());
     }
-
+    @GetMapping("/login")
+    public R<Boolean> checkLogin(){
+        boolean login = StpUtil.isLogin();
+        return R.success("检查完成",login);
+    }
 }
 

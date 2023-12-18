@@ -32,5 +32,9 @@ public class CommentController {
     public R<Object> post(@RequestBody Comment  reqDto){
         return service.uploadComment(reqDto);
     }
+    @GetMapping("/list")
+    public R<Page<Comment>> list(@RequestParam Long page,@RequestParam Long pageSize){
+        return service.getCommentList(page,pageSize);
+    }
 }
 

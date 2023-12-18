@@ -16,9 +16,8 @@ blogList.value =res.data
   <el-card>
     <template #header>
       <el-text type="info">这里有一些置顶的博客</el-text>
-
     </template>
-    <div style="height: 100%;position: relative">
+    <div class="body" style="position: relative">
 
     <div class="item" v-for="item in blogList">
       <router-link :to="'/frontend/blog/'+item.id">
@@ -35,6 +34,11 @@ blogList.value =res.data
 <style scoped>
 .item{
   position: relative;
+  height:75px;
+  margin-top: 5px;
+}
+.body{
+  height: fit-content;
 }
 .image{
   opacity: 1;

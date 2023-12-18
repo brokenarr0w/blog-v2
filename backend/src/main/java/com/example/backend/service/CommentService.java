@@ -16,4 +16,6 @@ public interface CommentService extends IService<Comment> {
     Page<Comment> getCommentListByPage(Long page, Long pageSize, Integer type, Long blogId);
 
     R<Object> uploadComment(Comment reqDto);
+
+    R<Page<Comment>> getCommentList(Long page, Long pageSize);
 }

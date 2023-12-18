@@ -69,8 +69,12 @@ export function getPrevById(id){
     return request.get('blog/prev',{
         params:{id}
     })
-}export function getNextById(id){
+}
+export function getNextById(id){
     return request.get('blog/next',{
         params:{id}
     })
+}
+export function getBlogTitleList(){
+    return request.get('blog/title')
 }

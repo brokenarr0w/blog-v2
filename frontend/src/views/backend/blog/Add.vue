@@ -32,13 +32,14 @@ onMounted(async() => {
     data.value = blog.data
     categoryData.value=blog.data.categoryId
     tagData.value = blog.data.tagList
+    image.value = blog.data.image
   }
 })
 const uploadBlog =async ()=> {
     tagResult = []
   data.value.tagList = tagData.value
   data.value.categoryId = categoryData
-  console.log(tagResult);
+  console.log(data.value);
   const res = await saveBlog(data.value)
   await handleResponse(res)
 }
@@ -51,7 +52,6 @@ const handleUpload =async  (file) => {
   const temp = new File([res],file.name,{
     type: res.type
   })
-  console.log(temp)
   let data1 = new FormData()
   data1.append("file",temp)
   console.log(data1.get("file"));
@@ -103,7 +103,6 @@ const onUpload =async (files,callback) => {
           单次限制上传一张图片
         </div>
       </template>
-
      <el-image v-if="image" :src="baseURL+image"></el-image>
       <template v-if="!image" #trigger>
         <el-button><el-icon><Plus/></el-icon></el-button>
@@ -148,7 +147,7 @@ const onUpload =async (files,callback) => {
   </el-col>
   <el-col :span="8" style="margin-top: 20px;">
 
-    <el-checkbox v-model="data.isTop" style="margin-top: 40px;">是否置顶</el-checkbox>
+    <el-checkbox v-model="data.top" style="margin-top: 40px;">是否置顶</el-checkbox>
   </el-col>
 </el-row>
   </div>

@@ -156,6 +156,14 @@ const routes = [
                 }
             },
             {
+                path:'/backend/comment',
+                name: 'comment',
+                component: () => import("../views/backend/comment/Comment.vue"),
+                meta: {
+                    title: '评论管理'
+                }
+            },
+            {
                 path: '/backend/setting',
                 name: 'setting',
                 component: () => import("../views/backend/webSetting/WebSetting.vue"),
